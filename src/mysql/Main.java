@@ -7,7 +7,6 @@ package mysql;
 
 import java.sql.*;
 
-
 public class Main {
 
     /**
@@ -18,22 +17,52 @@ public class Main {
         Connection con = null;
         PreparedStatement stmt = null;
         int retorno = 0;
-        
-        try{
+
+        try {
             con = login.conectar();
             System.out.println("\tConexión establecida");
-            
+            /*
+            // INSERCION 
             stmt = con.prepareStatement("INSERT INTO Categorias VALUES(?,?,?)");
-            stmt.setInt(1, 10);
-            stmt.setString(2,"Pasta");
-            stmt.setString(3,"Productos de pasta");
-            stmt.executeUpdate();
+            stmt.setInt(1, 11);
+            stmt.setString(2, "Pasta de oro");
+            stmt.setString(3, "Productos de pasta");
+            retorno = stmt.executeUpdate();
+            if (retorno>0){
+                System.out.println(retorno+" ejecutados");
+            }
             
+            //ACTUALIZACION
+            stmt = con.prepareStatement("UPDATE Categorias SET Descripcion='nueva descripcion' WHERE IdCategoria=?");
+            stmt.setInt(1, 10);            
+            retorno = stmt.executeUpdate();
+            if (retorno>0){
+                System.out.println(retorno+" ejecutados");
+            }
+
+            //ELIMINACION
+            stmt = con.prepareStatement("DELETE FROM Categorias WHERE IdCategoria=?");
+            stmt.setInt(1, 10);            
+            retorno = stmt.executeUpdate();
+            if (retorno>0){
+                System.out.println(retorno+" ejecutados");
+            }
+             */
             
-        }catch(Exception ex){
+            stmt = con.prepareStatement("SELECT * FROM Productos WHERE Categoria=?");
+            stmt.setInt(1, 1);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                System.out.println(rs.getInt(1) + " " + rs.getString("NomProducto") + " \t" + rs.getInt("Precio"));
+            }
+
+        } catch (Exception ex) {
             System.out.println(ex.getMessage());
+        } finally {
+            login.desconectar(con);
+            System.out.println("\tConexión cerrada");
         }
-        
+
     }
-    
+
 }
