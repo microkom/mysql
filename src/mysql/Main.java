@@ -59,6 +59,11 @@ public class Main {
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         } finally {
+            try{
+                if (rs!=null) rs.close();
+                if (stmt!=null) stmt.close();
+            }
+               
             login.desconectar(con);
             System.out.println("\tConexión cerrada");
         }
